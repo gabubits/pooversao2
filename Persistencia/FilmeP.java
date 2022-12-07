@@ -18,22 +18,22 @@ import java.util.LinkedList;
 
 public class FilmeP implements Persistencia {
 
+    private static FilmeP instancia;
+
+    private FilmeP(){}
+    public static synchronized FilmeP getinstancia(){
+        if (instancia == null) instancia = new FilmeP();
+        return instancia;
+    }
     private LinkedList<Filme> ListadeFilmes = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaFilmes.json";
     File BancoDeDadosFilme = new File(caminho);
 
-    public FilmeP(boolean choice) {
-        if (choice) {
-            if (!BancoDeDadosFilme.exists()) {
-                System.out.println("\nErro [Construtor de Filme]: \n\tInicialização de banco de dados inexistente não é possível!\n");
-            } else if (BancoDeDadosFilme.length() == 0) {
-                System.out.println("\nErro [Construtor de Filme]: \n\tInicialização de banco de dados vazio não é possível!\n");
-            } else {
-                CarregarArquivo();
-            }
-        }
+    public void InicializarArquivo(boolean choice){
+        if (choice) CarregarArquivo();
     }
+
     public void Inserir(Entidade entidade){
         if (ListadeFilmes.size() == 0) {
             entidade.setId(1);

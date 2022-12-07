@@ -16,20 +16,22 @@ import java.util.LinkedList;
 
 public class IngressoP implements Persistencia {
 
+    private static IngressoP instancia;
+
+    private IngressoP(){}
+    public static synchronized IngressoP getinstancia(){
+        if (instancia == null) instancia = new IngressoP();
+        return instancia;
+    }
     private static LinkedList<Ingresso> ListadeIngressos = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaIngressos.json";
     File BancoDeDadosIngresso = new File(caminho);
 
-    public IngressoP(boolean choice) {
-        if (choice) {
-            if (!BancoDeDadosIngresso.exists()) {
-                System.out.println("\nErro [Construtor de Ingresso]: \n\tInicialização de banco de dados inexistente não é possível!\n");
-            } else if (BancoDeDadosIngresso.length() == 0) {
-                System.out.println("\nErro [Construtor de Ingresso]: \n\tInicialização de banco de dados vazio não é possível!\n");
-            } else CarregarArquivo();
-        }
+    public void InicializarArquivo(boolean choice){
+        if (choice) CarregarArquivo();
     }
+
     public void Inserir(Entidade entidade){
         if (ListadeIngressos.size() == 0) {
             entidade.setId(1);

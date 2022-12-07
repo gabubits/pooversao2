@@ -15,20 +15,24 @@ import java.nio.file.Paths;
 import java.util.LinkedList;
 
 public class VendaP implements Persistencia {
+
+    private static VendaP instancia;
+    private VendaP(){}
+    public static synchronized VendaP getinstancia(){
+        if (instancia == null) instancia = new VendaP();
+        return instancia;
+    }
+
+
     private LinkedList<Venda> Vendas = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaVendas.json";
     File BancoDeDadosVenda = new File(caminho);
 
-    public VendaP(boolean choice) {
-        if (choice) {
-            if (!BancoDeDadosVenda.exists()) {
-                System.out.println("\nErro [Construtor de Venda]: \n\tInicialização de banco de dados inexistente não é possível!\n");
-            } else if (BancoDeDadosVenda.length() == 0) {
-                System.out.println("\nErro [Construtor de Venda]: \n\tInicialização de banco de dados vazio não é possível!\n");
-            } else CarregarArquivo();
-        }
+    public void InicializarArquivo(boolean choice){
+        if (choice) CarregarArquivo();
     }
+
     public void Inserir(Entidade entidade){
         if (Vendas.size() == 0) {
             entidade.setId(1);

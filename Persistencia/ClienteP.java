@@ -21,19 +21,23 @@ import java.util.LinkedList;
 
 public class ClienteP implements Persistencia {
 
-    // Um array que armazenará os objetos para serem usados no programa principal.
+    private static ClienteP instancia;
+
+    private ClienteP(){}
+
+    public static synchronized ClienteP getinstancia(){
+        if (instancia == null) instancia = new ClienteP();
+        return instancia;
+    }
+
     private LinkedList<Cliente> ListadeCliente = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaClientes.json";
 
-    // Variável que fará a tarefa de manipular o arquivo.
     File BancoDeDadosCliente = new File(caminho);
 
-    // Construtor que inicializa o ArrayList caso já tenha um banco de dados disponível (choice == true).
-    public ClienteP(boolean choice) {
-        if (choice) {
-                CarregarArquivo();
-            }
+    public void InicializarArquivo(boolean choice) {
+        if (choice) CarregarArquivo();
     }
 
     public void Inserir(Entidade entidade){
