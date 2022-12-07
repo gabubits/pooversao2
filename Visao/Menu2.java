@@ -40,10 +40,16 @@ public class Menu2 {
             System.out.println("\nObjetos do arquivo PersistenciaIngressos.json foram carregados.");
         }
 
-        ClienteP ClientePers = new ClienteP(choiceForConstructorCliente);
-        FilmeP FilmePers = new FilmeP(choiceForConstructorFilme);
-        VendaP VendaPers = new VendaP(choiceForConstructorVenda);
-        IngressoP IngressoP = new IngressoP(choiceForConstructorIngressos);
+        // Declaracao das variaveis de persistencia no formato Singleton
+        ClienteP ClientePers = ClienteP.getinstancia();
+        FilmeP FilmePers = FilmeP.getinstancia();
+        VendaP VendaPers = VendaP.getinstancia();
+        IngressoP IngressoPers = IngressoP.getinstancia();
+
+        ClientePers.InicializarArquivo(choiceForConstructorCliente);
+        FilmePers.InicializarArquivo(choiceForConstructorFilme);
+        VendaPers.InicializarArquivo(choiceForConstructorVenda);
+        IngressoPers.InicializarArquivo(choiceForConstructorIngressos);
 
         int opcaoLoopPrincipal = 1, opcaoMenuPrincipal, opcaoLoopClientes, opcaoMenuClientes;
         int opcaoLoopFilmes, opcaoMenuFilmes, opcaoLoopVenda, opcaoMenuVenda;
@@ -63,7 +69,7 @@ public class Menu2 {
                     ClientePers.AtualizarArquivo();
                     FilmePers.AtualizarArquivo();
                     VendaPers.AtualizarArquivo();
-                    IngressoP.AtualizarArquivo();
+                    IngressoPers.AtualizarArquivo();
                     break;
                 }
 
@@ -214,7 +220,7 @@ public class Menu2 {
                                 break;
                             }
                             case 1: {
-                                if (IngressoP.getListadeIngressos().size() == 0){
+                                if (IngressoPers.getListadeIngressos().size() == 0){
                                     System.out.println("\n" + Character.toString(128_196) +
                                             " Ainda nao ha ingressos disponiveis para venda!");
                                     break;
@@ -259,7 +265,7 @@ public class Menu2 {
                                     Ingresso ingressoAUX;
                                     System.out.print("\nQual o horario? ");
                                     int horarioesp = scn.nextInt();
-                                    ingressoAUX = IngressoP.BuscarString(Integer.toString(horarioesp));
+                                    ingressoAUX = IngressoPers.BuscarString(Integer.toString(horarioesp));
                                     if (ingressoAUX == null){
                                         System.out.println("\n" + Character.toString(129_306) +
                                                 " Nao existem filmes sendo exibidos no horario.");
@@ -272,12 +278,12 @@ public class Menu2 {
                                     }
 
                                     ingressoAUX = null;
-                                    for (int i = 0; i < IngressoP.getListadeIngressos().size(); i++) {
-                                        if (IngressoP.getListadeIngressos().get(i).getFilme().getTitulo().equals(auxBuscador2.getTitulo()) &&
-                                                IngressoP.getListadeIngressos().get(i).getHorarioEntrada() == horarioesp) {
+                                    for (int i = 0; i < IngressoPers.getListadeIngressos().size(); i++) {
+                                        if (IngressoPers.getListadeIngressos().get(i).getFilme().getTitulo().equals(auxBuscador2.getTitulo()) &&
+                                                IngressoPers.getListadeIngressos().get(i).getHorarioEntrada() == horarioesp) {
                                             auxBuscador2.setContagemdeIngressos(auxBuscador2.getContagemdeIngressos() - 1);
-                                            ingressoAUX = new Ingresso(IngressoP.getListadeIngressos().get(i));
-                                            IngressoP.Excluir(new Ingresso(1, auxBuscador2, horarioesp));
+                                            ingressoAUX = new Ingresso(IngressoPers.getListadeIngressos().get(i));
+                                            IngressoPers.Excluir(new Ingresso(1, auxBuscador2, horarioesp));
                                             break;
                                         }
                                     }
@@ -354,7 +360,7 @@ public class Menu2 {
                                 Ingresso ingressoAux = new Ingresso();
                                 System.out.print("\nQual o horario do filme? ");
                                 String horario = scn.nextLine();
-                                Ingresso ingressoAux2 = IngressoP.BuscarString(horario);
+                                Ingresso ingressoAux2 = IngressoPers.BuscarString(horario);
                                 if (ingressoAux2 != null) {
                                     if (!ingressoAux2.getFilme().getTitulo().equals(auxBuscador.getTitulo())) {
                                         System.out.println("\n" + Character.toString(128_190) +
@@ -370,15 +376,15 @@ public class Menu2 {
                                 int qtdIngressos = scn.nextInt();
                                 auxBuscador.setContagemdeIngressos(auxBuscador.getContagemdeIngressos() + qtdIngressos);
                                 ingressoAux.setFilme(auxBuscador);
-                                IngressoP.Inserir(ingressoAux);
+                                IngressoPers.Inserir(ingressoAux);
                                 for(int i = 1; i < qtdIngressos; i++) {
                                     Ingresso ingressoAux3 = new Ingresso(ingressoAux);
-                                    IngressoP.Inserir(ingressoAux3);
+                                    IngressoPers.Inserir(ingressoAux3);
                                 }
                                 break;
                             }
                             case 4: {
-                                if (IngressoP.getListadeIngressos().size() == 0) {
+                                if (IngressoPers.getListadeIngressos().size() == 0) {
                                     System.out.println("\n" + Character.toString(128_190) +
                                             " Nao ha ingressos disponiveis para serem removidos!");
                                     break;
@@ -411,17 +417,17 @@ public class Menu2 {
                                     else {
                                         auxBuscador.setContagemdeIngressos(auxBuscador.getContagemdeIngressos() - qtdIngressosR);
                                         if (opcaoHorarioEsp == 0) {
-                                            IngressoP.Excluir(new Ingresso(qtdIngressosR, auxBuscador, -1));
+                                            IngressoPers.Excluir(new Ingresso(qtdIngressosR, auxBuscador, -1));
                                         } else {
                                             System.out.print("\nDigite o horario HH que deseja remover: ");
                                             int horarioesp = scn.nextInt();
-                                            Ingresso ingressoaux = IngressoP.BuscarString(Integer.toString(horarioesp));
+                                            Ingresso ingressoaux = IngressoPers.BuscarString(Integer.toString(horarioesp));
                                             if (ingressoaux == null) {
                                                 System.out.println("\n" + Character.toString(128_190) +
                                                         " Nao existem filmes sendo exibidos nesse horario!");
                                                 break;
                                             }
-                                            IngressoP.Excluir(new Ingresso(qtdIngressosR, auxBuscador, horarioesp));
+                                            IngressoPers.Excluir(new Ingresso(qtdIngressosR, auxBuscador, horarioesp));
                                         }
                                         break;
                                     }
