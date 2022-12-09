@@ -14,27 +14,10 @@ public abstract class Visao {
         this.scanner = pscanner;
     }
 
-    public void opcoes() {
-        while (true) {
-            int op = menu();
-            if (op == 0)
-                return;
-            else if (op == 1)
-                Inserir();
-            else if (op == 2)
-                Excluir();
-            else if (op == 3)
-                BuscarID();
-            else if (op == 4)
-                BuscarString();
-        }
-    }
 
-    public abstract int menu();
-
-    public abstract void Inserir();
-    public abstract void Excluir();
-    public abstract void BuscarID();
-    public abstract void BuscarString();
+    public abstract void TelaInserir();
+    public abstract void TelaExcluir();
+    //public abstract void BuscarID();
+    //public abstract void BuscarString();
 
 }
