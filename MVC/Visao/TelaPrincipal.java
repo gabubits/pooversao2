@@ -6,20 +6,22 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class TelaPrincipal extends JFrame {
-    /*
-    private Scanner scanner;
 
     private ClienteControle ControleCliente;
     private FilmeControle ControleFilme;
     private IngressoControle ControleIngresso;
     private VendaControle ControleVenda;
-     */
+
     private JMenuBar BarraMenu;
     private JMenu MenuCliente;
     private JMenu MenuFilme;
@@ -29,6 +31,7 @@ public class TelaPrincipal extends JFrame {
     private JMenuItem CExcluir, FExcluir, IExcluir, VExcluir;
 
     private JPanel panel;
+    private TelaInsCliente telaInsCliente;
 
     public TelaPrincipal() {
         super("Tela Principal");
@@ -40,19 +43,32 @@ public class TelaPrincipal extends JFrame {
         ImageIcon iconePrincipal = new ImageIcon("MVC\\Visao\\imgs\\icone.jpg");
         setIconImage(iconePrincipal.getImage());
 
-        /*
-        this.scanner = new Scanner(System.in);
         this.ControleCliente = new ClienteControle();
         this.ControleFilme = new FilmeControle();
         this.ControleIngresso = new IngressoControle(ControleFilme);
         this.ControleVenda = new VendaControle(ControleIngresso, ControleCliente);
-         */
+        telaInsCliente = new TelaInsCliente(ControleCliente, this);
 
         UIManager.put("MenuBar.border", new LineBorder(Color.BLACK));
         UIManager.put("MenuItem.background", Color.BLACK);
 
         CInserir = new JMenuItem("Inserir Cliente");
         CInserir.setForeground(Color.WHITE);
+        CInserir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                telaInsCliente.setVisible(true);
+                telaInsCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                telaInsCliente.addWindowListener(new WindowAdapter() {
+                    public void windowClosing(WindowEvent wEvent) {
+                        ControleCliente.AtualizarArquivo();
+                        setVisible(true);
+                    }
+                });
+            }
+        });
+
         CExcluir = new JMenuItem("Remover Cliente");
         CExcluir.setForeground(Color.WHITE);
 

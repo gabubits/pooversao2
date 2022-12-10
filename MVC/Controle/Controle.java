@@ -13,6 +13,8 @@ public abstract class Controle {
         this.persistencia = persistencia;
     }
 
+    public void InicializarArquivo(boolean choice) { persistencia.InicializarArquivo(choice); }
+
     public void Inserir(Entidade entidade) { persistencia.Inserir(entidade); }
 
     public void Excluir(Entidade entidade) { persistencia.Excluir(entidade); }

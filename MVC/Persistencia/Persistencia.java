@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface Persistencia {
 
+    void InicializarArquivo(boolean choice);
     void Inserir(Entidade entidade);
     void Excluir(Entidade entidade);
     Entidade BuscarId(int id);

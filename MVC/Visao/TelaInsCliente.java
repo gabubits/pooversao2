@@ -1,5 +1,7 @@
 package Trabalho.MVC.Visao;
 
+import Trabalho.MVC.Controle.Controle;
+import Trabalho.MVC.Modelo.Cliente;
 import Trabalho.MVC.Visao.AbstractTables.AbstractTableCliente;
 
 import javax.swing.*;
@@ -8,9 +10,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.JTableHeader;
 import javax.swing.text.MaskFormatter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
-public class testando extends JFrame{
+public class TelaInsCliente extends JFrame {
 
     private JLabel TituloNoFrame;
     private JPanel PainelCentral;
@@ -22,8 +27,9 @@ public class testando extends JFrame{
     private JButton BotaoSalvar, BotaoCancelar;
     private JTable tabelaCliente;
     private JScrollPane SPtabelaCliente;
-    private AbstractTableCliente ModeloTabelaCliente = new AbstractTableCliente();
-    public testando() {
+    private AbstractTableCliente ModeloTabelaCliente;
+    public TelaInsCliente(Controle pControle, JFrame frame) {
+        ModeloTabelaCliente = new AbstractTableCliente(pControle);
         setSize(600, 600);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -84,7 +90,59 @@ public class testando extends JFrame{
         TFIdade.setBorder(new LineBorder(Color.WHITE));
 
         BotaoSalvar = new JButton("Salvar");
+        BotaoSalvar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (TFNome.getText().isEmpty() || TFCPF.getText().equals("   .   .   -  ") || TFIdade.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(null, "Algum dos campos não foram preenchidos!",
+                                                    "ERRO!", JOptionPane.ERROR_MESSAGE);
+                }
+                else if (pControle.BuscarString(TFCPF.getText()) != null){
+                    JOptionPane.showMessageDialog(null, "Usuário com o CPF já cadastrado!",
+                            "ERRO!", JOptionPane.ERROR_MESSAGE);
+                    TFCPF.setText("");
+                }
+                else {
+                    Cliente cliente = new Cliente();
+                    cliente.setNome(TFNome.getText());
+                    cliente.setCpf(TFCPF.getText());
+                    cliente.setIdade(Integer.parseInt(TFIdade.getText()));
+                    ModeloTabelaCliente.addRow(cliente, 0);
+                    JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!",
+                            "SUCESSO!", JOptionPane.INFORMATION_MESSAGE);
+                    TFNome.setText("");
+                    TFIdade.setText("");
+                    TFCPF.setText("");
+                }
+            }
+        });
+
         BotaoCancelar = new JButton("Cancelar");
+        BotaoCancelar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (TFNome.getText().isEmpty() && TFCPF.getText().equals("   .   .   -  ") && TFIdade.getText().isEmpty()){
+                    dispose();
+                    pControle.AtualizarArquivo();
+                    frame.setVisible(true);
+                }
+                if (!TFNome.getText().isEmpty() || !TFCPF.getText().equals("   .   .   -  ") || !TFIdade.getText().isEmpty()){
+                    String[] opcoes = {"SIM", "NÃO"};
+                    int aux = JOptionPane.showOptionDialog(null, "Deseja realmente descartar o cadastro atual?",
+                            "ATENÇÃO!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
+                    if (aux == 1) {
+                        dispose();
+                        TFNome.setText("");
+                        TFCPF.setText("");
+                        TFIdade.setText("");
+                        pControle.AtualizarArquivo();
+                        frame.setVisible(true);
+                    }
+                }
+            }
+        });
 
         GroupLayout layoutDP = new GroupLayout(PainelDadosPessoais);
         PainelDadosPessoais.setLayout(layoutDP);
@@ -145,6 +203,9 @@ public class testando extends JFrame{
         tabelaCliente.setBorder(new LineBorder(Color.BLACK));
         tabelaCliente.setForeground(Color.WHITE);
         tabelaCliente.setFillsViewportHeight(true);
+        tabelaCliente.setRowSelectionAllowed(false);
+        tabelaCliente.getTableHeader().setResizingAllowed(false);
+        tabelaCliente.getTableHeader().setReorderingAllowed(false);
         JTableHeader tabelaClienteHeader = tabelaCliente.getTableHeader();
         tabelaClienteHeader.setBackground(Color.BLACK);
         tabelaClienteHeader.setForeground(Color.WHITE);
@@ -164,10 +225,6 @@ public class testando extends JFrame{
         PainelCentral.add(PainelDadosPessoais);
         PainelCentral.add(PainelTabela);
         add(PainelCentral, BorderLayout.CENTER);
-
-
-
     }
 
-    public static void main(String[] args) { new testando().setVisible(true); }
 }
