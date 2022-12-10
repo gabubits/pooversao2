@@ -2,6 +2,9 @@ package Trabalho.MVC.Persistencia;
 
 import Trabalho.MVC.Modelo.Entidade;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public interface Persistencia {
 
     void Inserir(Entidade entidade);
@@ -9,7 +12,7 @@ public interface Persistencia {
     Entidade BuscarId(int id);
     Entidade BuscarString(String string);
 
-    void CarregarArquivo();
+    LinkedList<Entidade> CarregarArquivo();
     void AtualizarArquivo();
 
 }

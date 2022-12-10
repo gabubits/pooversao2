@@ -16,6 +16,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public class ClienteP implements Persistencia {
@@ -29,7 +30,7 @@ public class ClienteP implements Persistencia {
         return instancia;
     }
 
-    private LinkedList<Cliente> ListadeCliente = new LinkedList<>();
+    private LinkedList<Entidade> ListadeCliente = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaClientes.json";
 
@@ -87,7 +88,7 @@ public class ClienteP implements Persistencia {
         }
     }
 
-    public void CarregarArquivo(){
+    public LinkedList<Entidade> CarregarArquivo(){
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}
@@ -95,14 +96,15 @@ public class ClienteP implements Persistencia {
         Type tipoListadeCliente = new TypeToken<LinkedList<Cliente>>() {
         }.getType();
         ListadeCliente = gson.fromJson(conteudoObjetos, tipoListadeCliente);
+        return ListadeCliente;
     }
 
     // Método simples iterativo para buscar por id.
     public Cliente BuscarId(int id) {
         if (ListadeCliente.size() == 0) return null;
-        for (Cliente cliente : ListadeCliente) {
+        for (Entidade cliente : ListadeCliente) {
             if (cliente.getId() == id) {
-                return cliente;
+                return (Cliente) cliente;
             }
         }
         return null;
@@ -111,9 +113,9 @@ public class ClienteP implements Persistencia {
     // Método simples iterativo para buscar pelo nome.
     public Cliente BuscarString(String CPF) {
         if (ListadeCliente.size() == 0) return null;
-        for (Cliente cliente : ListadeCliente) {
-            if (cliente.getCpf().equals(CPF)) {
-                return cliente;
+        for (Entidade cliente : ListadeCliente) {
+            if (((Cliente) cliente).getCpf().equals(CPF)) {
+                return (Cliente) cliente;
             }
         }
         return null;

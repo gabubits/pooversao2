@@ -23,7 +23,7 @@ public class IngressoP implements Persistencia {
         if (instancia == null) instancia = new IngressoP();
         return instancia;
     }
-    private static LinkedList<Ingresso> ListadeIngressos = new LinkedList<>();
+    private static LinkedList<Entidade> ListadeIngressos = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaIngressos.json";
     File BancoDeDadosIngresso = new File(caminho);
@@ -47,7 +47,7 @@ public class IngressoP implements Persistencia {
         int contadorderemovidos = 0;
         if (((Ingresso) entidade).getHorarioEntrada() == -1) {
             for (int i = 0; i < ListadeIngressos.size(); ) {
-                if (ListadeIngressos.get(i).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())) {
+                if (((Ingresso) ListadeIngressos.get(i)).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())) {
                     ListadeIngressos.remove(i);
                     contadorderemovidos += 1;
                     if (contadorderemovidos == ((Ingresso) entidade).getId()) break;
@@ -55,8 +55,8 @@ public class IngressoP implements Persistencia {
             }
         } else {
             for (int i = 0; i < ListadeIngressos.size(); ) {
-                if (ListadeIngressos.get(i).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())
-                    && ListadeIngressos.get(i).getHorarioEntrada() == ((Ingresso) entidade).getHorarioEntrada()) {
+                if (((Ingresso) ListadeIngressos.get(i)).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())
+                    && ((Ingresso) ListadeIngressos.get(i)).getHorarioEntrada() == ((Ingresso) entidade).getHorarioEntrada()) {
                     ListadeIngressos.remove(i);
                     contadorderemovidos += 1;
                     if (contadorderemovidos == ((Ingresso) entidade).getId()) break;
@@ -65,8 +65,8 @@ public class IngressoP implements Persistencia {
         }
         for (int i = 0; i < ListadeIngressos.size(); i++){
             ListadeIngressos.get(i).setId(i + 1);
-            if (ListadeIngressos.get(i).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())) {
-                ListadeIngressos.get(i).getFilme().setContagemdeIngressos(((Ingresso) entidade).getFilme().getContagemdeIngressos());
+            if (((Ingresso) ListadeIngressos.get(i)).getFilme().getTitulo().equals(((Ingresso) entidade).getFilme().getTitulo())) {
+                ((Ingresso) ListadeIngressos.get(i)).getFilme().setContagemdeIngressos(((Ingresso) entidade).getFilme().getContagemdeIngressos());
             }
         }
     }
@@ -103,7 +103,7 @@ public class IngressoP implements Persistencia {
         }
     }
 
-    public void CarregarArquivo(){
+    public LinkedList<Entidade> CarregarArquivo(){
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}
@@ -111,27 +111,24 @@ public class IngressoP implements Persistencia {
         Type tipoListadeIngressos = new TypeToken<LinkedList<Ingresso>>() {
         }.getType();
         ListadeIngressos = gson.fromJson(conteudoObjetos, tipoListadeIngressos);
+        return ListadeIngressos;
     }
 
     public Ingresso BuscarId(int id) {
-        for (Ingresso cadaIngresso : ListadeIngressos) {
+        for (Entidade cadaIngresso : ListadeIngressos) {
             if (cadaIngresso.getId() == id) {
-                return cadaIngresso;
+                return (Ingresso) cadaIngresso;
             }
         }
         return null;
     }
 
     public Ingresso BuscarString(String string) {
-        for (Ingresso cadaIngresso : ListadeIngressos) {
-            if (cadaIngresso.getHorarioEntrada() == Integer.parseInt(string)) {
-                return cadaIngresso;
+        for (Entidade cadaIngresso : ListadeIngressos) {
+            if (((Ingresso) cadaIngresso).getHorarioEntrada() == Integer.parseInt(string)) {
+                return (Ingresso) cadaIngresso;
             }
         }
         return null;
-    }
-
-    public LinkedList<Ingresso> getListadeIngressos(){
-        return ListadeIngressos;
     }
 }

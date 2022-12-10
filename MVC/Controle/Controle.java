@@ -3,6 +3,8 @@ package Trabalho.MVC.Controle;
 import Trabalho.MVC.Modelo.Entidade;
 import Trabalho.MVC.Persistencia.Persistencia;
 
+import java.util.LinkedList;
+
 public abstract class Controle {
     
     Persistencia persistencia = null;
@@ -19,7 +21,7 @@ public abstract class Controle {
 
     public Entidade BuscarString(String string){ return persistencia.BuscarString(string); }
 
-    public void CarregarArquivo(){ persistencia.CarregarArquivo(); }
+    public LinkedList<Entidade> CarregarArquivo(){ return persistencia.CarregarArquivo(); }
 
     public void AtualizarArquivo(){ persistencia.AtualizarArquivo(); }
 

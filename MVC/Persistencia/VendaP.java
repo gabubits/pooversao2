@@ -24,7 +24,7 @@ public class VendaP implements Persistencia {
     }
 
 
-    private LinkedList<Venda> Vendas = new LinkedList<>();
+    private LinkedList<Entidade> Vendas = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaVendas.json";
     File BancoDeDadosVenda = new File(caminho);
@@ -80,7 +80,7 @@ public class VendaP implements Persistencia {
         }
     }
 
-    public void CarregarArquivo(){
+    public LinkedList<Entidade> CarregarArquivo(){
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}
@@ -88,25 +88,23 @@ public class VendaP implements Persistencia {
         Type tipoVendas = new TypeToken<LinkedList<Venda>>() {
         }.getType();
         Vendas = gson.fromJson(conteudoObjetos, tipoVendas);
+        return Vendas;
     }
     public Venda BuscarId(int id) {
-        for (Venda venda : Vendas) {
+        for (Entidade venda : Vendas) {
             if (venda.getId() == id) {
-                return venda;
+                return (Venda) venda;
             }
         }
         return null;
     }
     public Venda BuscarString(String CPFCliente) {
-        for (Venda venda : Vendas) {
-            if (venda.getClienteDaVenda().getCpf().equals(CPFCliente)) {
-                return venda;
+        for (Entidade venda : Vendas) {
+            if (((Venda) venda).getClienteDaVenda().getCpf().equals(CPFCliente)) {
+                return (Venda) venda;
             }
         }
         return null;
     }
 
-    public LinkedList<Venda> getVendas(){
-        return Vendas;
-    }
 }

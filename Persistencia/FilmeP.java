@@ -25,7 +25,7 @@ public class FilmeP implements Persistencia {
         if (instancia == null) instancia = new FilmeP();
         return instancia;
     }
-    private LinkedList<Filme> ListadeFilmes = new LinkedList<>();
+    private LinkedList<Entidade> ListadeFilmes = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaFilmes.json";
     File BancoDeDadosFilme = new File(caminho);
@@ -94,18 +94,18 @@ public class FilmeP implements Persistencia {
     }
 
     public Filme BuscarId(int id) {
-        for (Filme listadeFilme : ListadeFilmes) {
+        for (Entidade listadeFilme : ListadeFilmes) {
             if (listadeFilme.getId() == id) {
-                return listadeFilme;
+                return (Filme) listadeFilme;
             }
         }
         return null;
     }
 
     public Filme BuscarString(String string) {
-        for (Filme listadeFilme : ListadeFilmes) {
-            if (listadeFilme.getTitulo().equalsIgnoreCase(string)) {
-                return listadeFilme;
+        for (Entidade listadeFilme : ListadeFilmes) {
+            if (((Filme) listadeFilme).getTitulo().equalsIgnoreCase(string)) {
+                return (Filme) listadeFilme;
             }
         }
         return null;

@@ -279,10 +279,10 @@ public class Menu2 {
 
                                     ingressoAUX = null;
                                     for (int i = 0; i < IngressoPers.getListadeIngressos().size(); i++) {
-                                        if (IngressoPers.getListadeIngressos().get(i).getFilme().getTitulo().equals(auxBuscador2.getTitulo()) &&
-                                                IngressoPers.getListadeIngressos().get(i).getHorarioEntrada() == horarioesp) {
+                                        if (((Ingresso) IngressoPers.getListadeIngressos().get(i)).getFilme().getTitulo().equals(auxBuscador2.getTitulo()) &&
+                                                ((Ingresso) IngressoPers.getListadeIngressos().get(i)).getHorarioEntrada() == horarioesp) {
                                             auxBuscador2.setContagemdeIngressos(auxBuscador2.getContagemdeIngressos() - 1);
-                                            ingressoAUX = new Ingresso(IngressoPers.getListadeIngressos().get(i));
+                                            ingressoAUX = new Ingresso((Ingresso) IngressoPers.getListadeIngressos().get(i));
                                             IngressoPers.Excluir(new Ingresso(1, auxBuscador2, horarioesp));
                                             break;
                                         }
@@ -300,7 +300,7 @@ public class Menu2 {
                                     } else {
                                         for (int i = 0; i < VendaPers.getVendas().size(); i++) {
                                             if (VendaPers.getVendas().get(i).getId() == vendaAux.getId()) {
-                                                VendaPers.getVendas().get(i).getIngressosComprados().add(ingressoAUX);
+                                                ((Venda) VendaPers.getVendas().get(i)).getIngressosComprados().add(ingressoAUX);
                                                 break;
                                             }
                                         }

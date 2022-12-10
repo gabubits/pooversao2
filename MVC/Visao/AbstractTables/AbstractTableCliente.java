@@ -1,5 +1,6 @@
 package Trabalho.MVC.Visao.AbstractTables;
 
+import Trabalho.MVC.Controle.ClienteControle;
 import Trabalho.MVC.Modelo.Cliente;
 import Trabalho.MVC.Modelo.Entidade;
 
@@ -9,8 +10,14 @@ import java.util.List;
 
 public class AbstractTableCliente extends AbstractTableModel {
 
+    private ClienteControle Controlador;
+    public AbstractTableCliente(ClienteControle pClienteControle) {
+        this.Controlador = pClienteControle;
+
+    }
+    public AbstractTableCliente(){}
     private List<Cliente> Clientes = new LinkedList<>();
-    private String[] NomesColunas = {"Nome", "CPF", "Idade"};
+    private String[] NomesColunas = {"ID", "Nome", "CPF", "Idade"};
 
     @Override
     public String getColumnName(int column) {
@@ -31,12 +38,18 @@ public class AbstractTableCliente extends AbstractTableModel {
     public Object getValueAt(int NLinha, int NColuna) {
         switch(NColuna) {
             case 0:
-                return Clientes.get(NLinha).getNome();
+                return Clientes.get(NLinha).getId();
             case 1:
-                return Clientes.get(NLinha).getCpf();
+                return Clientes.get(NLinha).getNome();
             case 2:
+                return Clientes.get(NLinha).getCpf();
+            case 3:
                 return Clientes.get(NLinha).getIdade();
         }
         return null;
+    }
+
+    public void addRow(Cliente pCliente) {
+
     }
 }

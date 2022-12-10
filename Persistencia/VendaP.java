@@ -24,7 +24,7 @@ public class VendaP implements Persistencia {
     }
 
 
-    private LinkedList<Venda> Vendas = new LinkedList<>();
+    private LinkedList<Entidade> Vendas = new LinkedList<>();
 
     String caminho = System.getProperty("user.dir") + "\\PersistenciaVendas.json";
     File BancoDeDadosVenda = new File(caminho);
@@ -90,23 +90,23 @@ public class VendaP implements Persistencia {
         Vendas = gson.fromJson(conteudoObjetos, tipoVendas);
     }
     public Venda BuscarId(int id) {
-        for (Venda venda : Vendas) {
+        for (Entidade venda : Vendas) {
             if (venda.getId() == id) {
-                return venda;
+                return (Venda) venda;
             }
         }
         return null;
     }
     public Venda BuscarString(String CPFCliente) {
-        for (Venda venda : Vendas) {
-            if (venda.getClienteDaVenda().getCpf().equals(CPFCliente)) {
-                return venda;
+        for (Entidade venda : Vendas) {
+            if (((Venda)venda).getClienteDaVenda().getCpf().equals(CPFCliente)) {
+                return (Venda) venda;
             }
         }
         return null;
     }
 
-    public LinkedList<Venda> getVendas(){
+    public LinkedList<Entidade> getVendas(){
         return Vendas;
     }
 }
