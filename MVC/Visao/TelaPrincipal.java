@@ -1,6 +1,7 @@
 package Trabalho.MVC.Visao;
 
 import Trabalho.MVC.Controle.*;
+import Trabalho.MVC.Visao.AbstractTables.AbstractTableCliente;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class TelaPrincipal extends JFrame {
     private JPanel panel;
     private TelaInsCliente telaInsCliente;
     private TelaRemCliente telaRemCliente;
+    private AbstractTableCliente ModeloTabelaCliente;
 
     public TelaPrincipal() {
         super("Tela Principal");
@@ -46,14 +48,22 @@ public class TelaPrincipal extends JFrame {
         setIconImage(iconePrincipal.getImage());
 
         this.ControleCliente = new ClienteControle();
+        ModeloTabelaCliente = new AbstractTableCliente(ControleCliente);
         this.ControleFilme = new FilmeControle();
         this.ControleIngresso = new IngressoControle(ControleFilme);
         this.ControleVenda = new VendaControle(ControleIngresso, ControleCliente);
-        telaInsCliente = new TelaInsCliente(ControleCliente, this);
-        telaRemCliente = new TelaRemCliente(ControleCliente);
+        telaInsCliente = new TelaInsCliente(ControleCliente, this, ModeloTabelaCliente);
+        telaRemCliente = new TelaRemCliente(ControleCliente, ModeloTabelaCliente);
 
         UIManager.put("MenuBar.border", new LineBorder(Color.BLACK));
         UIManager.put("MenuItem.background", Color.BLACK);
+
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                ControleCliente.AtualizarArquivo();
+            }
+        });
 
         CInserir = new JMenuItem("Inserir Cliente");
         CInserir.setForeground(Color.WHITE);
@@ -65,7 +75,6 @@ public class TelaPrincipal extends JFrame {
                 telaInsCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 telaInsCliente.addWindowListener(new WindowAdapter() {
                     public void windowClosing(WindowEvent wEvent) {
-                        ControleCliente.AtualizarArquivo();
                         setVisible(true);
                     }
                 });
@@ -83,7 +92,6 @@ public class TelaPrincipal extends JFrame {
                 telaRemCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 telaRemCliente.addWindowListener(new WindowAdapter() {
                     public void windowClosing(WindowEvent wEvent) {
-                        ControleCliente.AtualizarArquivo();
                         setVisible(true);
                     }
                 });

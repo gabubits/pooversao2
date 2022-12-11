@@ -89,6 +89,7 @@ public class ClienteP implements Persistencia {
     }
 
     public LinkedList<Entidade> CarregarArquivo(){
+        if (!BancoDeDadosCliente.exists()) return ListadeCliente;
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}

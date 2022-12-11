@@ -5,8 +5,6 @@ import Trabalho.MVC.Modelo.Cliente;
 import Trabalho.MVC.Modelo.Entidade;
 
 import javax.swing.table.AbstractTableModel;
-import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 
 public class AbstractTableCliente extends AbstractTableModel {
@@ -17,16 +15,9 @@ public class AbstractTableCliente extends AbstractTableModel {
 
     public AbstractTableCliente(Controle pClienteControle) {
         this.Controlador = pClienteControle;
-        String caminhoBDD = System.getProperty("user.dir") + "\\PersistenciaClientes.json";
-        File BDD = new File(caminhoBDD);
-        if (BDD.exists()) {
-                Clientes = pClienteControle.CarregarArquivo();
-            }
-        else {
-                Clientes = new LinkedList<>();
-            }
+        Clientes = Controlador.CarregarArquivo();
         this.fireTableDataChanged();
-        }
+    }
 
     @Override
     public String getColumnName(int column) {
@@ -58,18 +49,8 @@ public class AbstractTableCliente extends AbstractTableModel {
         return "";
     }
 
-    public void addRow(Entidade entidade, int opcao) {
-        if (opcao == 0) {
-            Controlador.Inserir(entidade);
-        }
-        if (this.Clientes.size() == 0) {
-            entidade.setId(1);
-        } else {
-            entidade.setId(this.Clientes.get(
-                    this.Clientes.size() - 1).getId() + 1);
-        }
-
-        this.Clientes.add(entidade);
+    public void addRow(Entidade entidade) {
+        Controlador.Inserir(entidade);
         this.fireTableDataChanged();
     }
 

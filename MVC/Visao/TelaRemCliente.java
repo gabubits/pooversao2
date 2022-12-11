@@ -18,11 +18,9 @@ public class TelaRemCliente extends JFrame {
     private JPanel PainelTabela;
     private JTable tabelaCliente;
     private JScrollPane SPtabelaCliente;
-    private AbstractTableCliente ModeloTabelaCliente1;
     private JButton BotaoRemover;
 
-    public TelaRemCliente(Controle pControle) {
-        ModeloTabelaCliente1 = new AbstractTableCliente(pControle);
+    public TelaRemCliente(Controle pControle, AbstractTableCliente Modelo) {
         setSize(600, 600);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -46,7 +44,7 @@ public class TelaRemCliente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (tabelaCliente.getSelectedRow() != -1){
-                    ModeloTabelaCliente1.removeRow(tabelaCliente.getSelectedRow());
+                    Modelo.removeRow(tabelaCliente.getSelectedRow());
                 }
             }
         });
@@ -57,7 +55,7 @@ public class TelaRemCliente extends JFrame {
         PainelCentral.setBackground(Color.BLACK);
 
         tabelaCliente = new JTable();
-        tabelaCliente.setModel(ModeloTabelaCliente1);
+        tabelaCliente.setModel(Modelo);
         tabelaCliente.setOpaque(true);
         tabelaCliente.setBackground(Color.BLACK);
         tabelaCliente.setBorder(new LineBorder(Color.BLACK));

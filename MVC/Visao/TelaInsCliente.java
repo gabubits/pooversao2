@@ -12,7 +12,6 @@ import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.text.ParseException;
 
 public class TelaInsCliente extends JFrame {
@@ -27,9 +26,8 @@ public class TelaInsCliente extends JFrame {
     private JButton BotaoSalvar, BotaoCancelar;
     private JTable tabelaCliente;
     private JScrollPane SPtabelaCliente;
-    private AbstractTableCliente ModeloTabelaCliente;
-    public TelaInsCliente(Controle pControle, JFrame frame) {
-        ModeloTabelaCliente = new AbstractTableCliente(pControle);
+
+    public TelaInsCliente(Controle pControle, JFrame frame, AbstractTableCliente Modelo) {
         setSize(600, 600);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -94,8 +92,9 @@ public class TelaInsCliente extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (TFNome.getText().isEmpty() || TFCPF.getText().equals("   .   .   -  ") || TFIdade.getText().isEmpty()){
-                    JOptionPane.showMessageDialog(null, "Algum dos campos não foram preenchidos!",
+                if (TFNome.getText().isEmpty() || TFCPF.getText().equals("   .   .   -  ") || TFIdade.getText().isEmpty()
+                    || TFCPF.getText().length() != 14){
+                    JOptionPane.showMessageDialog(null, "Algum dos campos não foram preenchidos corretamente!",
                                                     "ERRO!", JOptionPane.ERROR_MESSAGE);
                 }
                 else if (pControle.BuscarString(TFCPF.getText()) != null){
@@ -108,7 +107,7 @@ public class TelaInsCliente extends JFrame {
                     cliente.setNome(TFNome.getText());
                     cliente.setCpf(TFCPF.getText());
                     cliente.setIdade(Integer.parseInt(TFIdade.getText()));
-                    ModeloTabelaCliente.addRow(cliente, 0);
+                    Modelo.addRow(cliente);
                     JOptionPane.showMessageDialog(null, "Cliente cadastrado com sucesso!",
                             "SUCESSO!", JOptionPane.INFORMATION_MESSAGE);
                     TFNome.setText("");
@@ -125,19 +124,17 @@ public class TelaInsCliente extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (TFNome.getText().isEmpty() && TFCPF.getText().equals("   .   .   -  ") && TFIdade.getText().isEmpty()){
                     dispose();
-                    pControle.AtualizarArquivo();
                     frame.setVisible(true);
                 }
                 if (!TFNome.getText().isEmpty() || !TFCPF.getText().equals("   .   .   -  ") || !TFIdade.getText().isEmpty()){
                     String[] opcoes = {"SIM", "NÃO"};
                     int aux = JOptionPane.showOptionDialog(null, "Deseja realmente descartar o cadastro atual?",
                             "ATENÇÃO!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, opcoes, null);
-                    if (aux == 1) {
+                    if (aux == 0) {
                         dispose();
                         TFNome.setText("");
                         TFCPF.setText("");
                         TFIdade.setText("");
-                        pControle.AtualizarArquivo();
                         frame.setVisible(true);
                     }
                 }
@@ -197,7 +194,7 @@ public class TelaInsCliente extends JFrame {
         );
 
         tabelaCliente = new JTable();
-        tabelaCliente.setModel(ModeloTabelaCliente);
+        tabelaCliente.setModel(Modelo);
         tabelaCliente.setOpaque(true);
         tabelaCliente.setBackground(Color.BLACK);
         tabelaCliente.setBorder(new LineBorder(Color.BLACK));
