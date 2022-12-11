@@ -40,6 +40,7 @@ public class TelaPrincipal extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
 
         ImageIcon iconePrincipal = new ImageIcon("MVC\\Visao\\imgs\\icone.jpg");
         setIconImage(iconePrincipal.getImage());
@@ -148,7 +149,5 @@ public class TelaPrincipal extends JFrame {
         panel.add(picLabel);
         add(panel, BorderLayout.CENTER);
     }
-
-    public static void main(String[] args) { new TelaPrincipal().setVisible(true); }
 
 }
