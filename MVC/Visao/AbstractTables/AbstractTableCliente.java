@@ -12,7 +12,7 @@ import java.util.List;
 public class AbstractTableCliente extends AbstractTableModel {
 
     private Controle Controlador;
-    private List<Entidade> Clientes = new LinkedList<>();
+    private List<Entidade> Clientes;
     private String[] NomesColunas = {"ID", "Nome", "CPF", "Idade"};
 
     public AbstractTableCliente(Controle pClienteControle) {
@@ -21,8 +21,11 @@ public class AbstractTableCliente extends AbstractTableModel {
         File BDD = new File(caminhoBDD);
         if (BDD.exists()) {
                 Clientes = pClienteControle.CarregarArquivo();
-                this.fireTableDataChanged();
             }
+        else {
+                Clientes = new LinkedList<>();
+            }
+        this.fireTableDataChanged();
         }
 
     @Override
@@ -72,8 +75,7 @@ public class AbstractTableCliente extends AbstractTableModel {
 
     public void removeRow(int linha){
         Controlador.Excluir(this.Clientes.get(linha));
-        this.Clientes.remove(linha);
         for (int i = 0; i < this.Clientes.size(); i++) this.Clientes.get(i).setId(i + 1);
-        this.fireTableRowsDeleted(linha, linha);
+        this.fireTableDataChanged();
     }
 }

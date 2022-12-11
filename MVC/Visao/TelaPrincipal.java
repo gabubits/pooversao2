@@ -32,6 +32,7 @@ public class TelaPrincipal extends JFrame {
 
     private JPanel panel;
     private TelaInsCliente telaInsCliente;
+    private TelaRemCliente telaRemCliente;
 
     public TelaPrincipal() {
         super("Tela Principal");
@@ -48,6 +49,7 @@ public class TelaPrincipal extends JFrame {
         this.ControleIngresso = new IngressoControle(ControleFilme);
         this.ControleVenda = new VendaControle(ControleIngresso, ControleCliente);
         telaInsCliente = new TelaInsCliente(ControleCliente, this);
+        telaRemCliente = new TelaRemCliente(ControleCliente);
 
         UIManager.put("MenuBar.border", new LineBorder(Color.BLACK));
         UIManager.put("MenuItem.background", Color.BLACK);
@@ -71,6 +73,21 @@ public class TelaPrincipal extends JFrame {
 
         CExcluir = new JMenuItem("Remover Cliente");
         CExcluir.setForeground(Color.WHITE);
+        CExcluir.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                telaRemCliente.setVisible(true);
+                telaRemCliente.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                telaRemCliente.addWindowListener(new WindowAdapter() {
+                    public void windowClosing(WindowEvent wEvent) {
+                        ControleCliente.AtualizarArquivo();
+                        setVisible(true);
+                    }
+                });
+            }
+        });
 
         FInserir = new JMenuItem("Inserir Filme");
         FInserir.setForeground(Color.WHITE);
