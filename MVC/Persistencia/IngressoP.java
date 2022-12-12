@@ -104,6 +104,7 @@ public class IngressoP implements Persistencia {
     }
 
     public LinkedList<Entidade> CarregarArquivo(){
+        if(!BancoDeDadosIngresso.exists()) return ListadeIngressos;
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}

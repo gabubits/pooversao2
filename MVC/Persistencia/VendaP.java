@@ -81,6 +81,7 @@ public class VendaP implements Persistencia {
     }
 
     public LinkedList<Entidade> CarregarArquivo(){
+        if(!BancoDeDadosVenda.exists()) return Vendas;
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}

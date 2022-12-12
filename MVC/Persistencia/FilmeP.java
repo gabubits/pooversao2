@@ -84,6 +84,7 @@ public class FilmeP implements Persistencia {
 
 
     public LinkedList<Entidade> CarregarArquivo(){
+        if(!BancoDeDadosFilme.exists()) return ListadeFilmes;
         String conteudoObjetos = null;
         try {conteudoObjetos = Files.readString(Paths.get(caminho));}
         catch (IOException exception) {exception.printStackTrace();}
