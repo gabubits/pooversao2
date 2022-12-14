@@ -186,7 +186,7 @@ public class TelaPrincipal extends JFrame {
         BufferedImage imagem = null;
 
         try {
-            imagem = ImageIO.read(new File("pooversao2/MVC/Visao/imgs/img_cinema.jpg"));
+            imagem = ImageIO.read(new File("MVC\\Visao\\imgs\\img_cinema.jpg"));
         }
         catch (IOException ex){ ex.printStackTrace(); }
 

@@ -68,7 +68,7 @@ public class TelaInsFilme extends JFrame {
         TFfaixaEtaria.setForeground(Color.WHITE);
         TFfaixaEtaria.setBorder(new LineBorder(Color.WHITE));
 
-        LabelGenero = new JLabel("Titulo do Filme:");
+        LabelGenero = new JLabel("Genero do Filme:");
         LabelGenero.setForeground(Color.WHITE);
         TFGenero = new JTextField(15);
         TFGenero.setOpaque(true);
