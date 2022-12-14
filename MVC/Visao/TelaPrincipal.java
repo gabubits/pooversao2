@@ -50,7 +50,17 @@ public class TelaPrincipal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
 
-        ImageIcon iconePrincipal = new ImageIcon("MVC\\Visao\\imgs\\icone.jpg");
+        String diretorio = null;
+
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            diretorio = "MVC\\Visao\\imgs\\icone.jpg";
+        }
+        else if (System.getProperty("os.name").toLowerCase().contains("nix") || System.getProperty("os.name").toLowerCase().contains("nux") ||
+                System.getProperty("os.name").toLowerCase().contains("aix")){
+            diretorio = "MVC/Visao/imgs/icone.jpg";
+        }
+
+        ImageIcon iconePrincipal = new ImageIcon(diretorio);
         setIconImage(iconePrincipal.getImage());
 
         this.ControleCliente = new ClienteControle();
@@ -185,8 +195,16 @@ public class TelaPrincipal extends JFrame {
 
         BufferedImage imagem = null;
 
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            diretorio = "MVC\\Visao\\imgs\\img_cinema.jpg";
+        }
+        else if (System.getProperty("os.name").toLowerCase().contains("nix") || System.getProperty("os.name").toLowerCase().contains("nux") ||
+                System.getProperty("os.name").toLowerCase().contains("aix")){
+            diretorio = "MVC/Visao/imgs/img_cinema.jpg";
+        }
+
         try {
-            imagem = ImageIO.read(new File("MVC\\Visao\\imgs\\img_cinema.jpg"));
+            imagem = ImageIO.read(new File(diretorio));
         }
         catch (IOException ex){ ex.printStackTrace(); }
 
