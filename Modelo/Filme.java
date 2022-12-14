@@ -1,5 +1,7 @@
 package Trabalho;
 
+import Trabalho.MVC.Modelo.Entidade;
+
 public class Filme extends Entidade {
 
      private String titulo;

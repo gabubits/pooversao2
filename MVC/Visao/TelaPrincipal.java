@@ -1,7 +1,11 @@
 package Trabalho.MVC.Visao;
 
-import Trabalho.MVC.Controle.*;
+import Trabalho.MVC.Controle.ClienteControle;
+import Trabalho.MVC.Controle.FilmeControle;
+import Trabalho.MVC.Controle.IngressoControle;
+import Trabalho.MVC.Controle.VendaControle;
 import Trabalho.MVC.Visao.AbstractTables.AbstractTableCliente;
+import Trabalho.MVC.Visao.AbstractTables.AbstractTableFilme;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -14,7 +18,6 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 
 public class TelaPrincipal extends JFrame {
 
@@ -35,6 +38,9 @@ public class TelaPrincipal extends JFrame {
     private TelaInsCliente telaInsCliente;
     private TelaRemCliente telaRemCliente;
     private AbstractTableCliente ModeloTabelaCliente;
+    private AbstractTableFilme ModeloTabelaFilme;
+    private TelaInsFilme telaInsFilme;
+    private TelaRemFilme telaRemFilme;
 
     public TelaPrincipal() {
         super("Tela Principal");
@@ -50,10 +56,13 @@ public class TelaPrincipal extends JFrame {
         this.ControleCliente = new ClienteControle();
         ModeloTabelaCliente = new AbstractTableCliente(ControleCliente);
         this.ControleFilme = new FilmeControle();
+        ModeloTabelaFilme = new AbstractTableFilme(ControleFilme);
         this.ControleIngresso = new IngressoControle(ControleFilme);
         this.ControleVenda = new VendaControle(ControleIngresso, ControleCliente);
         telaInsCliente = new TelaInsCliente(ControleCliente, this, ModeloTabelaCliente);
         telaRemCliente = new TelaRemCliente(ControleCliente, ModeloTabelaCliente);
+        telaInsFilme = new TelaInsFilme(ControleFilme, this, ModeloTabelaFilme);
+        telaRemFilme = new TelaRemFilme(ControleFilme, ModeloTabelaFilme);
 
         UIManager.put("MenuBar.border", new LineBorder(Color.BLACK));
         UIManager.put("MenuItem.background", Color.BLACK);
@@ -62,6 +71,7 @@ public class TelaPrincipal extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 ControleCliente.AtualizarArquivo();
+                ControleFilme.AtualizarArquivo();
             }
         });
 
@@ -100,8 +110,37 @@ public class TelaPrincipal extends JFrame {
 
         FInserir = new JMenuItem("Inserir Filme");
         FInserir.setForeground(Color.WHITE);
+        FInserir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                telaInsFilme.setVisible(true);
+                telaInsFilme.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                telaInsFilme.addWindowListener(new WindowAdapter() {
+                    public void windowClosing(WindowEvent wEvent) {
+                        setVisible(true);
+                    }
+                });
+            }
+        });
+
         FExcluir = new JMenuItem("Remover Filme");
         FExcluir.setForeground(Color.WHITE);
+        FExcluir.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                telaRemFilme.setVisible(true);
+                telaRemFilme.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                telaRemFilme.addWindowListener(new WindowAdapter() {
+                    public void windowClosing(WindowEvent wEvent) {
+                        setVisible(true);
+                    }
+                });
+            }
+        });
+
 
         IInserir = new JMenuItem("Inserir Ingresso(s)");
         IInserir.setForeground(Color.WHITE);
@@ -147,7 +186,7 @@ public class TelaPrincipal extends JFrame {
         BufferedImage imagem = null;
 
         try {
-            imagem = ImageIO.read(new File("MVC\\Visao\\imgs\\img_cinema.jpg"));
+            imagem = ImageIO.read(new File("pooversao2/MVC/Visao/imgs/img_cinema.jpg"));
         }
         catch (IOException ex){ ex.printStackTrace(); }
 
