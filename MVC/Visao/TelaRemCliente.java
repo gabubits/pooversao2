@@ -63,6 +63,7 @@ public class TelaRemCliente extends JFrame {
         tabelaCliente.setFillsViewportHeight(true);
         tabelaCliente.getTableHeader().setResizingAllowed(false);
         tabelaCliente.getTableHeader().setReorderingAllowed(false);
+        tabelaCliente.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JTableHeader tabelaClienteHeader = tabelaCliente.getTableHeader();
         tabelaClienteHeader.setBackground(Color.BLACK);
         tabelaClienteHeader.setForeground(Color.WHITE);
